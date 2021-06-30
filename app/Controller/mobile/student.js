@@ -71,9 +71,9 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     let { email, password, deviceToken, deviceType, phoneNumber } = req.body;
-     let searchObj = {
-       $or: [email, phoneNumber],
-     };
+    let searchObj = {
+      $or: [email, phoneNumber],
+    };
     let studentData = await db.findOne(Model.Student, { searchObj });
     if (!studentData || studentData.isVeriFied == false)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
@@ -174,8 +174,8 @@ exports.addResume = async (req, res) => {
 
 exports.addMagzine = async (req, res) => {
   try {
-    let { title, image, author, description , studentId} = req.body;
-    console.log(req.file)
+    let { title, image, author, description, studentId } = req.body;
+    console.log(req.file);
 
     let dataToSave = {
       title,
@@ -300,14 +300,11 @@ exports.getComplaint = async (req, res) => {
     let complaintObj = {};
     if (req.body.complaintId) {
       complaintObj = {
-        $or: [
-          
-          { _id: req.body.complaintId },
-        ],
+        $or: [{ _id: req.body.complaintId }],
       };
     }
     let count = await Model.Complaint.countDocuments(complaintObj);
-    let users = await Model.Complaint.findOne(complaintObj)
+    let users = await Model.Complaint.findOne(complaintObj);
     // .skip(skip).limit(limit);
     res.status(200).send({
       data: users,
@@ -323,8 +320,8 @@ exports.getComplaint = async (req, res) => {
 
 exports.userSuggestion = async (req, res) => {
   try {
-   let { studentId, title, body } = req.body;
-    let saveData = await db.saveData(Model.Suggestion , {...req.body})
+    let { studentId, title, body } = req.body;
+    let saveData = await db.saveData(Model.Suggestion, { ...req.body });
     res.status(200).send({
       data: saveData,
       customMessage: "OK",
@@ -464,7 +461,6 @@ exports.updateResume = async (req, res) => {
   }
 };
 
-
 exports.addEvent = async (req, res) => {
   try {
     let {
@@ -477,7 +473,7 @@ exports.addEvent = async (req, res) => {
       description,
       url,
       eventType,
-      deviceType
+      deviceType,
     } = req.body;
 
     let dataToSave = {
@@ -490,9 +486,9 @@ exports.addEvent = async (req, res) => {
       url,
       eventType,
     };
-    if ( deviceType ==="mobile"){
-      dataToSave.image = image
-    }else{
+    if (deviceType === "mobile") {
+      dataToSave.image = image;
+    } else {
       dataToSave.image = req.file.filename;
       dataToSave.isVerify = true;
     }
@@ -507,3 +503,55 @@ exports.addEvent = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+exports.applyEvent = async (req, res) => {
+  try {
+    let { studentId, eventId } = req.body;
+    let findAlreadyApplied = await db.findOne(Model.Student, {
+      _id: studentId,
+      events: eventId,
+    });
+
+    if (findAlreadyApplied)
+      return res.send({
+        customMessage: "Event Already applied",
+        statusCode: 406,
+      });
+
+    let updateStudent = db.findAndUpdate(
+      Model.Student,
+      { _id: studentId },
+      {
+        $push: {
+          events: eventId,
+        },
+      },
+      { new: true }
+    );
+    let updateEvent = db.findAndUpdate(
+      Model.Event,
+      { _id: eventId },
+      {
+        $push: {
+          studentId,
+        },
+      },
+      { new: true }
+    );
+    let [studentData, eventData] = await Promise.all([
+      updateStudent,
+      updateEvent,
+    ]);
+    return res.send({
+      data: { studentData, eventData },
+      customMessage: "Event Added",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
+
+
+exports

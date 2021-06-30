@@ -1,30 +1,28 @@
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema;
 
-
-
-let Student = new Schema(
+let YearBook = new Schema(
   {
     name: { type: String, default: "", trim: true },
-    fatherName: { type: String, default: "", trim: true },
     email: { type: String, trim: true, default: "" },
     phoneNumber: { type: Number },
     rollNumber: { type: Number },
-    password: { type: String, trim: true },
     address: { type: String, trim: true },
     dob: { type: Date },
     branch: { type: String, trim: true },
-    deviceToken: { type: String, trim: true },
-    deviceType: { type: String, trim: true },
     image: { type: String },
     stream: { type: String },
     isVerified: { type: Boolean, default: false },
     semester: { type: Number, index: true },
-    college: { type: String, trim: true },
+    q1: { type: String, trim: true },
+    q2: { type: String, trim: true },
+    q3: { type: String, trim: true },
+    q4: { type: String, trim: true },
+    q5: { type: String, trim: true },
+    q6: { type: String, trim: true },
+    q7: { type: String, trim: true },
     isTeacher: { type: Boolean, default: false },
-    isStudent: { type: Boolean, default: false },
-    events: [{ type: Schema.ObjectId, ref: "Event" }],
-    isFinalYear: { type: Boolean, default: false },
+    studentId: [{ type: Schema.ObjectId, ref: "Student" }],
 
     /* ******************************* important point ************************************ */
 
@@ -37,6 +35,4 @@ let Student = new Schema(
   { versionKey: false }
 );
 
-module.exports = mongoose.model("Student", Student);
-
-
+module.exports = mongoose.model("YearBook", YearBook);

@@ -109,9 +109,9 @@ exports.getAllStudent = async (req, res) => {
 
 exports.getOneStudent = async (req, res) => {
   try {
-    let studentData = await db.findOne(Model.Student, {
+    let studentData = await db.populateData(Model.Student, {
       _id: req.query.studentId,
-    });
+    } ,{} , {} , "events");
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
