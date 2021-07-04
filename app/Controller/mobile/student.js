@@ -74,7 +74,7 @@ exports.login = async (req, res) => {
     let searchObj = {
       $or: [email, phoneNumber],
     };
-    let studentData = await db.findOne(Model.Student, { searchObj });
+    let studentData = await db.findOne(Model.Student,  searchObj );
     if (!studentData || studentData.isVeriFied == false)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
@@ -473,7 +473,7 @@ exports.addEvent = async (req, res) => {
       description,
       url,
       eventType,
-      deviceType,
+      // deviceType,
     } = req.body;
 
     let dataToSave = {

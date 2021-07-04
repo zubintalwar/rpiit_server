@@ -5,6 +5,44 @@ const universalFunction = require("../../UniversalFuntions"),
   validations = require("../../Validation");
 const { sendMail } = require("../../utils/sendMail");
 
+
+exports.login = async (req, res) => {
+  try {
+    console.log(req.body);
+    let { email, password } = req.body;
+    let searchObj = {
+      email,
+    };
+    let studentData = await db.findOne(Model.Admin,  searchObj );
+    console.log(studentData);
+    if (!studentData )
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
+    let verifyPassword = await universalFunction.Password.verifyPassword(
+      password,
+      studentData.password
+    );
+    if (!verifyPassword)
+      return res
+        .status(400)
+        .send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_PASSWORD);
+
+
+    let accessToken = await universalFunction.JwtAuth.jwtSign(
+      studentData._id,
+      studentData.email
+    );
+    console.log("token", accessToken);
+    return res.status(200).send({
+      data: studentData,
+      accessToken,
+      customMessage: "Successfully logged in",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};
 exports.addStudent = async (req, res) => {
   try {
     let {

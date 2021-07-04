@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
 
 
 let Admin = new Schema({
-  name: { type: String, default: "", trim: true },
+  name: { type: String, default: "Admin", trim: true },
   email: { type: String, trim: true, default: "" },
   password: { type: String, trim: true },
   actionType:{type: String, trim: true},
