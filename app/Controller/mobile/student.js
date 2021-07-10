@@ -329,7 +329,7 @@ exports.userSuggestion = async (req, res) => {
       data: saveData,
       customMessage: "OK",
       statusCode: 200,
-      count,
+      // count,
     });
   } catch (err) {
     res.status(401).send(err);
