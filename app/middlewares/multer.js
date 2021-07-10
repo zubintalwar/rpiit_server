@@ -32,5 +32,5 @@ const fileFilter = function (req, file, callback) {
 exports.upload = multer({
   storage: storage,
   limits: { fileSize: 100000000 },
-  fileFilter
+  // fileFilter
 });

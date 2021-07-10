@@ -5,6 +5,8 @@ const universalFunction = require("../../UniversalFuntions"),
   validations = require("../../Validation");
 const { sendMail } = require("../../utils/sendMail");
 
+let path = "http://3.12.68.246:8000/uploader/"
+
 exports.signup = async (req, res) => {
   try {
     let {
@@ -163,7 +165,7 @@ exports.addResume = async (req, res) => {
     let saveData = await db.saveData(Model.Resume, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "Your Account is under verification",
+      customMessage: "success",
       statusCode: 200,
     });
   } catch (err) {
@@ -175,15 +177,15 @@ exports.addResume = async (req, res) => {
 exports.addMagzine = async (req, res) => {
   try {
     let { title, image, author, description, studentId } = req.body;
-    console.log(req.file);
+    console.log(req.file , req.body);
 
     let dataToSave = {
       title,
-      image,
+      image, 
       author,
-      description,
+      description, 
       studentId,
-      emagazine: req.file.filename,
+      emagazine:path + req.file.filename,
     };
     let saveData = await db.saveData(Model.Emagzines, dataToSave);
     res.status(200).send({
