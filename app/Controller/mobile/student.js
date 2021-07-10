@@ -185,7 +185,7 @@ exports.addMagzine = async (req, res) => {
       author,
       description, 
       studentId,
-      emagazine:path + req.file.filename,
+      emagazine:req.file ? path + req.file.filename : "",
     };
     let saveData = await db.saveData(Model.Emagzines, dataToSave);
     res.status(200).send({
