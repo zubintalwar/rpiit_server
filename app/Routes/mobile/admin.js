@@ -11,5 +11,7 @@ Route.get("/getAllStudent", Controller.Admin.getAllStudent);
 Route.get("/getOneStudent", Controller.Admin.getOneStudent);
 Route.get("/getAllAlumini", Controller.Admin.getAllAlumini);
 Route.delete("/deleteMagzines/:magzineId", Controller.Admin.deleteMagzines);
+Route.post("/addAnnouncement",multer.upload.single("image"), Controller.Admin.addAnnouncement);
+
 
 module.exports = Route;
