@@ -1,8 +1,5 @@
-
-
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema;
-
 
 let Anouncement = new Schema(
   {
