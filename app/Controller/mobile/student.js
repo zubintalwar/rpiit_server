@@ -227,29 +227,6 @@ exports.getOneMagzine = async (req, res) => {
   }
 };
 
-// exports.addMagzine = async (req, res) => {
-//   try {
-//     let { title, image, author, description } = req.body;
-
-//     let dataToSave = {
-//       title,
-//       image,
-//       author,
-//       description,
-//       emagazine: req.file.emagazine,
-//     };
-//     let saveData = await db.saveData(Model.Event, dataToSave);
-//     res.status(200).send({
-//       data: saveData,
-//       customMessage: "Magzine Added",
-//       statusCode: 200,
-//     });
-//   } catch (err) {
-//     res.status(401).send(err);
-//     return console.log("ERROR", err);
-//   }
-// };
-
 exports.getStudent = async (req, res) => {
   try {
     const limit = parseInt(req.body.limit); // Make sure to parse the limit to number
@@ -561,4 +538,17 @@ exports.applyEvent = async (req, res) => {
 };
 
 
-// exports
+
+exports.getResume = async (req, res) => {
+  try {
+    let getData = await db.findOne(Model.Resume, { studentId: req.body.studentId });
+    res.status(200).send({
+      data: getData,
+      customMessage: "ok",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};

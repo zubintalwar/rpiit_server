@@ -345,3 +345,20 @@ exports.addAnnouncement = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+
+exports.changeSemester = (req , res)=>{
+  try {
+    let {branch} = req.body
+    if (branch === "engineering" || branch === "bhm&ct" || branch === "b-pharma"|| branch === "bsc-n"|| branch === "bpt"|| branch === "baslp"|| branch === "bpharma"){
+
+    }
+    if (branch === "diploma" || branch === "bba" || branch === "dmlt"|| branch === "gnm"|| branch === "rac"|| branch === "bsfi"|| branch === "mit"){
+    }
+    if (branch === "mtech" || branch === "mba" || branch === "d-pharma"|| branch === "anm"|| branch === "post-basic-n"){
+    }
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+}
