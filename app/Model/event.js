@@ -24,11 +24,9 @@ let Event = new Schema(
     image: { type: String },
     description: { type: String },
     url: { type: String },
-    eventType: {
-      type: String,
-      enum: ["social", "cultural", "sports", "trips"],
-    },
+    eventType: {type: String,enum: ["social", "cultural", "sports", "trips"],},
     studentId: [{ type: Schema.ObjectId, ref: "Student" }],
+    creatorId: { type: Schema.ObjectId, ref: "Student" },
     isFree: { type: Boolean, default: false },
     isVerify: { type: Boolean, default: false },
 

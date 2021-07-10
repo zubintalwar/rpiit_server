@@ -476,6 +476,8 @@ exports.addEvent = async (req, res) => {
       description,
       url,
       eventType,
+      deviceType,
+      creatorId
       // deviceType,
     } = req.body;
 
@@ -491,8 +493,10 @@ exports.addEvent = async (req, res) => {
     };
     if (deviceType === "mobile") {
       dataToSave.image = image;
+      dataToSave.creatorId = creatorId;
+
     } else {
-      dataToSave.image = req.file.filename;
+      dataToSave.image = path + req.file.filename;
       dataToSave.isVerify = true;
     }
     let saveData = await db.saveData(Model.Event, dataToSave);
