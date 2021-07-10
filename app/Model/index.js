@@ -19,4 +19,5 @@ module.exports = {
   Complaint: require("./complaint"),
   Suggestion: require("./suggestion"),
   Alumini: require("./alumini"),
+  Announcement: require("./annoucement"),
 };

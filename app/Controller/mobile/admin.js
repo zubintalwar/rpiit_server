@@ -4,7 +4,7 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config"),
   validations = require("../../Validation");
 const { sendMail } = require("../../utils/sendMail");
-
+let path = "http://3.12.68.246:8000/uploader/"
 
 exports.login = async (req, res) => {
   try {
@@ -13,9 +13,9 @@ exports.login = async (req, res) => {
     let searchObj = {
       email,
     };
-    let studentData = await db.findOne(Model.Admin,  searchObj );
+    let studentData = await db.findOne(Model.Admin, searchObj);
     console.log(studentData);
-    if (!studentData )
+    if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
       password,
@@ -25,7 +25,6 @@ exports.login = async (req, res) => {
       return res
         .status(400)
         .send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_PASSWORD);
-
 
     let accessToken = await universalFunction.JwtAuth.jwtSign(
       studentData._id,
@@ -148,9 +147,15 @@ exports.getAllStudent = async (req, res) => {
 
 exports.getOneStudent = async (req, res) => {
   try {
-    let studentData = await db.populateData(Model.Student, {
-      _id: req.query.studentId,
-    } ,{} , {} , "events");
+    let studentData = await db.populateData(
+      Model.Student,
+      {
+        _id: req.query.studentId,
+      },
+      {},
+      {},
+      "events"
+    );
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
     return res.status(200).send({
@@ -322,5 +327,21 @@ exports.updateStudent = async (req, res) => {
   } catch (err) {
     console.log("===========", err);
     res.status(400).send({ message: "Please enter valid data" });
+  }
+};
+
+exports.addAnnouncement = async (req, res) => {
+  try {
+    let { title, date, description,url } = req.body;
+    let saveData = await db.saveData(Model.Announcement, { ...req.body , image :req.file?path+ req.file.filename:""});
+    res.status(200).send({
+      data: saveData,
+      customMessage: "OK",
+      statusCode: 200,
+      // count,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
   }
 };
