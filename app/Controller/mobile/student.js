@@ -75,7 +75,7 @@ exports.login = async (req, res) => {
       $or: [{email:field}, {phoneNumber:field}],
     };
     let studentData = await db.findOne(Model.Student,  searchObj );
-    if (!studentData || studentData.isVerified == false)
+    if (!studentData )
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
       password,
