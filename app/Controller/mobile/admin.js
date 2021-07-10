@@ -109,13 +109,14 @@ exports.addStudent = async (req, res) => {
 exports.verifyStudent = async (req, res) => {
   try {
     let { studentId } = req.body;
+    console.log(req.body);
     let studentData = await db.findOne(Model.Student, { _id: studentId });
     if (!studentData)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
-    let updateStudentData = await db.update(
+    let updateStudentData = await db.findAndUpdate(
       Model.Student,
-      { email },
-      { isVeriFied: true },
+      { _id: studentId },
+      { isVerified: true },
       { new: true }
     );
     return res.status(200).send({

@@ -70,12 +70,12 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    let { email, password, deviceToken, deviceType, phoneNumber } = req.body;
+    let { field, password, deviceToken, deviceType } = req.body;
     let searchObj = {
-      $or: [email, phoneNumber],
+      $or: [{email:field}, {phoneNumber:field}],
     };
     let studentData = await db.findOne(Model.Student,  searchObj );
-    if (!studentData || studentData.isVeriFied == false)
+    if (!studentData || studentData.isVerified == false)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
       password,
@@ -85,9 +85,9 @@ exports.login = async (req, res) => {
       return res
         .status(400)
         .send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_PASSWORD);
-    let updateStudentData = await db.update(
+    let updateStudentData = await db.findAndUpdate(
       Model.Student,
-      { email },
+      searchObj,
       { deviceToken, deviceType },
       { new: true }
     );
@@ -261,6 +261,7 @@ exports.getStudent = async (req, res) => {
           { email: req.body.search },
           { _id: req.body.search },
         ],
+        isVeriFied:true
       };
     }
     let count = await Model.Student.countDocuments(searchObj);
@@ -554,4 +555,4 @@ exports.applyEvent = async (req, res) => {
 };
 
 
-exports
+// exports

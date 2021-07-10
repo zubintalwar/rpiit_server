@@ -7,11 +7,7 @@ const express = require("express"),
 Route.post("/signup", Controller.Student.signup);
 Route.post("/login", Controller.Student.login);
 Route.post("/addResume", Controller.Student.addResume);
-Route.post(
-  "/addMagzine",
-  multer.upload.single("emagazine"),
-  Controller.Student.addMagzine
-);
+Route.post("/addMagzine",multer.upload.single("emagazine"),Controller.Student.addMagzine);
 Route.get("/getAllMagzines", Controller.Student.getAllMagzines);
 Route.get("/getOneMagzine/:id", Controller.Student.getOneMagzine);
 
