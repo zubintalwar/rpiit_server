@@ -1,8 +1,7 @@
 const universalFunction = require("../../UniversalFuntions"),
   db = require("../../services/dboperations"),
   Model = require("../../Model"),
-  config = require("../../config"),
-  validations = require("../../Validation");
+  config = require("../../config");
 const { sendMail } = require("../../utils/sendMail");
 
 let path = "http://3.12.68.246:8000/uploader/"
@@ -19,6 +18,7 @@ exports.signup = async (req, res) => {
       address,
       dob,
       branch,
+      course,
       deviceToken,
       deviceType,
       image,
@@ -56,6 +56,7 @@ exports.signup = async (req, res) => {
       college,
       isTeacher,
       isStudent,
+      course,
       password: hashPassword,
     };
     let saveData = await db.saveData(Model.Student, dataToSave);
@@ -536,8 +537,6 @@ exports.applyEvent = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
-
-
 
 exports.getResume = async (req, res) => {
   try {
