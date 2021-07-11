@@ -348,3 +348,19 @@ exports.addAnnouncement = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+exports.getAnnouncement = async (req, res) => {
+  try {
+    let announcement = await db.getData(Model.Announcement);
+    if (!announcement)
+      return res.send(config.ErrorStatus.STATUS_MSG.ERROR.SOMETHING_WENT_WRONG);
+    return res.status(200).send({
+      data: announcement,
+      customMessage: "Successfull",
+      statusCode: 200,
+    });
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+};

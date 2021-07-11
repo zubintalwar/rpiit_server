@@ -4,7 +4,7 @@ const mongoose = require("mongoose"),
 let Anouncement = new Schema(
   {
     title: { type: String, default: "", trim: true },
-    date: { type: Date },
+    date: { type: String },
     image: { type: String },
     description: { type: String },
     url: { type: String },
