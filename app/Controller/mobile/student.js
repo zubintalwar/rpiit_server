@@ -4,8 +4,6 @@ const universalFunction = require("../../UniversalFuntions"),
   config = require("../../config");
 const { sendMail } = require("../../utils/sendMail");
 
-let path = "http://3.12.68.246:8000/uploader/"
-
 exports.signup = async (req, res) => {
   try {
     let {
@@ -73,12 +71,12 @@ exports.signup = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    let { field, password, deviceToken, deviceType } = req.body;
+    let { email, password, deviceToken, deviceType, phoneNumber } = req.body;
     let searchObj = {
-      $or: [{email:field}, {phoneNumber:field}],
+      $or: [email, phoneNumber],
     };
-    let studentData = await db.findOne(Model.Student,  searchObj );
-    if (!studentData )
+    let studentData = await db.findOne(Model.Student, searchObj);
+    if (!studentData || studentData.isVeriFied == false)
       return res.send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_EMAIL);
     let verifyPassword = await universalFunction.Password.verifyPassword(
       password,
@@ -88,9 +86,9 @@ exports.login = async (req, res) => {
       return res
         .status(400)
         .send(config.ErrorStatus.STATUS_MSG.ERROR.INVALID_PASSWORD);
-    let updateStudentData = await db.findAndUpdate(
+    let updateStudentData = await db.update(
       Model.Student,
-      searchObj,
+      { email },
       { deviceToken, deviceType },
       { new: true }
     );
@@ -166,7 +164,7 @@ exports.addResume = async (req, res) => {
     let saveData = await db.saveData(Model.Resume, dataToSave);
     res.status(200).send({
       data: saveData,
-      customMessage: "success",
+      customMessage: "Your Account is under verification",
       statusCode: 200,
     });
   } catch (err) {
@@ -178,15 +176,15 @@ exports.addResume = async (req, res) => {
 exports.addMagzine = async (req, res) => {
   try {
     let { title, image, author, description, studentId } = req.body;
-    console.log(req.file , req.body);
+    console.log(req.file);
 
     let dataToSave = {
       title,
-      image, 
+      image,
       author,
-      description, 
+      description,
       studentId,
-      emagazine:req.file ? path + req.file.filename : "",
+      emagazine: req.file.filename,
     };
     let saveData = await db.saveData(Model.Emagzines, dataToSave);
     res.status(200).send({
@@ -241,7 +239,6 @@ exports.getStudent = async (req, res) => {
           { email: req.body.search },
           { _id: req.body.search },
         ],
-        isVeriFied:true
       };
     }
     let count = await Model.Student.countDocuments(searchObj);
@@ -307,7 +304,7 @@ exports.userSuggestion = async (req, res) => {
       data: saveData,
       customMessage: "OK",
       statusCode: 200,
-      // count,
+      count,
     });
   } catch (err) {
     res.status(401).send(err);

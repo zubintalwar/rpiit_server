@@ -1,8 +1,6 @@
 const mongoose = require("mongoose"),
   Schema = mongoose.Schema;
 
-
-
 let Student = new Schema(
   {
     name: { type: String, default: "", trim: true },
@@ -39,5 +37,3 @@ let Student = new Schema(
 );
 
 module.exports = mongoose.model("Student", Student);
-
-
