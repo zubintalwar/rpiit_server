@@ -6,6 +6,8 @@ const express = require("express"),
 
 Route.post("/verifyStudent", Controller.Admin.verifyStudent);
 Route.post("/login", Controller.Admin.login);
+Route.post("/addStudent", Controller.Admin.addStudent);
+
 Route.post("/updateStudent/:id", Controller.Admin.updateStudent);
 Route.get("/getAllStudent", Controller.Admin.getAllStudent);
 Route.get("/getOneStudent", Controller.Admin.getOneStudent);
