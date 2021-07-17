@@ -134,6 +134,7 @@ exports.verifyStudent = async (req, res) => {
 };
 
 exports.getAllStudent = async (req, res) => {
+  console.log("req");
   try {
     let studentData = await db.getData(Model.Student);
     if (!studentData)
@@ -460,12 +461,10 @@ exports.getAnnouncement = async (req, res) => {
   }
 };
 
-
-exports.yearBook = async (req , res) =>{
+exports.yearBook = async (req, res) => {
   try {
-    
   } catch (err) {
     res.status(401).send(err);
     return console.log("ERROR", err);
   }
-}
+};

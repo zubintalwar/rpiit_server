@@ -12,6 +12,7 @@ Route.post("/updateStudent/:id", Controller.Admin.updateStudent);
 Route.get("/getAllStudent", Controller.Admin.getAllStudent);
 Route.get("/getOneStudent", Controller.Admin.getOneStudent);
 Route.get("/getAllAlumini", Controller.Admin.getAllAlumini);
+Route.get("/getAllSuggestion".Controller.Admin.getAllSuggestion);
 Route.delete("/deleteMagzines/:magzineId", Controller.Admin.deleteMagzines);
 Route.post(
   "/addAnnouncement",
