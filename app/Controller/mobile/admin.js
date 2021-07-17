@@ -459,3 +459,13 @@ exports.getAnnouncement = async (req, res) => {
     return console.log("ERROR", err);
   }
 };
+
+
+exports.yearBook = async (req , res) =>{
+  try {
+    
+  } catch (err) {
+    res.status(401).send(err);
+    return console.log("ERROR", err);
+  }
+}
